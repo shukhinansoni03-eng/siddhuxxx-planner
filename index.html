@@ -3,450 +3,125 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Siddhu Planner — Phase 2+3</title>
+  <title>Siddhu Planner</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#2563eb"/>
+  <!-- If you added style.css, keep this line. If not, remove it. -->
+  <link rel="stylesheet" href="/style.css">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#2563eb">
   <style>
-    :root{
-      --bg:#eef6ff;--card:#ffffffcc;--accent:#2563eb;--muted:#6b7280;--glass:rgba(255,255,255,0.72);
-      --dark-bg:#071029;--dark-card:#0b1220cc;--dark-muted:#9aa6b2
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{font-family:'Inter',system-ui,Arial;margin:0;padding:18px;background:linear-gradient(180deg,#f7fbff 0%,var(--bg) 100%);color:#071029;min-height:100vh}
-    .wrap{max-width:1100px;margin:0 auto}
-    header.hero{display:flex;align-items:center;justify-content:space-between;gap:12px;background:linear-gradient(90deg,rgba(255,255,255,0.75),rgba(240,246,255,0.75));backdrop-filter:blur(6px);padding:16px;border-radius:12px;box-shadow:0 8px 30px rgba(9,30,66,0.06)}
-    .hero-left h1{margin:0;font-size:20px}
-    .tagline{color:var(--muted);margin-top:6px;font-size:13px}
-    .controls{display:flex;gap:8px;align-items:center}
-    .btn{border-radius:10px;padding:8px 12px;border:none;cursor:pointer;font-weight:600}
+    /* Minimal fallback styles if style.css is missing */
+    :root{--accent:#2563eb;--muted:#6b7280}
+    body{font-family:'Inter',system-ui,Arial;margin:0;padding:18px;background:#f7fbff;color:#071029}
+    .wrap{max-width:980px;margin:0 auto}
+    header{display:flex;justify-content:space-between;align-items:center;padding:14px;border-radius:10px;background:linear-gradient(90deg,#fff,#f3f8ff);box-shadow:0 8px 24px rgba(9,30,66,0.04)}
+    .btn{padding:8px 12px;border-radius:8px;border:none;cursor:pointer}
     .btn.primary{background:var(--accent);color:#fff}
-    .btn.ghost{background:transparent;border:1px solid rgba(9,30,66,0.06);color:#071029}
-    .status{font-size:13px;color:var(--muted);display:flex;gap:8px;align-items:center}
-    .grid{display:grid;grid-template-columns:1fr 380px;gap:14px;margin-top:16px}
-    @media(max-width:980px){.grid{grid-template-columns:1fr}}
-    .panel{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 8px 24px rgba(9,30,66,0.04)}
-    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-    .card{background:var(--glass);padding:12px;border-radius:10px;transition:transform .18s ease,box-shadow .18s ease}
-    .card:hover{transform:translateY(-6px)}
-    .note{background:#fff;padding:10px;border-radius:8px;margin-top:8px;box-shadow:0 6px 18px rgba(9,30,66,0.03)}
-    .notes-list{max-height:360px;overflow:auto;padding-right:6px}
-    .small{font-size:12px;color:var(--muted)}
-    .filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-    .chip{padding:6px 8px;border-radius:999px;background:#f3f6fb;border:1px solid rgba(9,30,66,0.03);cursor:pointer;font-size:13px}
-    .chip.active{background:var(--accent);color:#fff}
-    .progress{display:flex;gap:12px;align-items:center}
-    .streak{background:linear-gradient(90deg,#fff,#f7fbff);padding:8px;border-radius:8px;text-align:center}
-    footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
-    .modal-back{position:fixed;inset:0;background:rgba(3,10,18,0.45);display:flex;align-items:center;justify-content:center;z-index:9999}
-    .modal{background:#fff;padding:14px;border-radius:10px;max-width:520px;width:94%}
-    input,textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eefc;margin-top:8px;font-size:14px}
-    .row{display:flex;gap:8px}
-    .row > *{flex:1}
-    .muted{color:var(--muted)}
-    .install-hint{font-size:13px;padding:6px 8px;border-radius:8px;background:#fff;border:1px solid rgba(9,30,66,0.04)}
-    .topbar{display:flex;gap:10px;align-items:center}
-    .chart-wrap{height:160px}
-    .theme-toggle{display:flex;gap:6px;align-items:center;padding:6px;border-radius:8px;background:#fff;border:1px solid rgba(9,30,66,0.04)}
-    /* dark mode */
-    body.dark{background:linear-gradient(180deg,#071029 0%,#071029 100%);color:#e6eefc}
-    body.dark .panel{background:var(--dark-card)}
-    body.dark .card{background:rgba(11,18,32,0.6)}
-    body.dark .note{background:#071029}
-    body.dark .small{color:var(--dark-muted)}
-    body.dark .tagline{color:var(--dark-muted)}
+    .panel{background:#fff;padding:12px;border-radius:10px;box-shadow:0 8px 24px rgba(9,30,66,0.04);margin-top:12px}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
+    .card{padding:10px;border-radius:8px;background:rgba(255,255,255,0.8);box-shadow:0 6px 18px rgba(9,30,66,0.03)}
+    .notes-list{max-height:320px;overflow:auto;margin-top:10px}
+    .note{background:#fbfdff;padding:10px;border-radius:8px;margin-top:8px}
+    .small{font-size:13px;color:var(--muted)}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <header class="hero">
-      <div class="hero-left">
-        <h1>Siddhu Planner</h1>
-        <div class="tagline">Timetable, quick capture, error log, charts, offline sync — ready for coaching days</div>
+    <header>
+      <div>
+        <h1 style="margin:0">Siddhu Planner</h1>
+        <div class="small">Timetable • Quick capture • Offline support</div>
       </div>
-      <div class="controls">
-        <div class="status" id="networkStatus">● <span id="netText">Checking…</span></div>
-        <div class="theme-toggle" id="themeToggle">
-          <label class="small muted" style="margin-right:6px">Theme</label>
-          <button class="btn ghost" id="toggleTheme">Toggle</button>
-        </div>
-        <button class="btn ghost" id="openCaptureBtn">Add note</button>
-        <button class="btn primary" id="openMockBtn">Run mock</button>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div id="netText" class="small">Checking…</div>
+        <button class="btn primary" id="openCaptureBtn">Add note</button>
       </div>
     </header>
 
-    <div class="grid">
-      <main>
-        <section class="panel">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <h3 style="margin:0">Daily Timetable</h3>
-            <div class="small muted">Tap a slot to tag it</div>
+    <main>
+      <section class="panel">
+        <h3 style="margin:0">Daily Timetable</h3>
+        <div class="cards" id="timetableCards"></div>
+      </section>
+
+      <section class="panel">
+        <h3 style="margin:0">Quick Capture</h3>
+        <div style="margin-top:8px">
+          <div style="display:flex;gap:8px">
+            <button class="btn primary" id="openCaptureBtn2">Add note</button>
+            <button class="btn" id="clearNotes">Clear</button>
           </div>
-          <div class="cards" id="timetableCards" style="margin-top:12px"></div>
-        </section>
+          <div class="notes-list" id="notes"></div>
+        </div>
+      </section>
+    </main>
 
-        <section class="panel" style="margin-top:12px">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <h3 style="margin:0">Evening Review & Progress</h3>
-            <div class="progress">
-              <div class="streak"><div style="font-size:18px;font-weight:700" id="streakCount">0</div><div class="small">day streak</div></div>
-            </div>
-          </div>
-
-          <div style="display:flex;gap:12px;margin-top:12px;align-items:center">
-            <div style="flex:1">
-              <div class="small muted">Notes by tag</div>
-              <div class="chart-wrap"><canvas id="tagChart"></canvas></div>
-            </div>
-            <div style="width:220px">
-              <div class="small muted">Recent activity</div>
-              <div id="miniStats" style="margin-top:8px"></div>
-              <div style="margin-top:10px;display:flex;gap:8px">
-                <button class="btn primary" id="exportCsv">Export CSV</button>
-                <button class="btn ghost" id="downloadJson">Export JSON</button>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <aside>
-        <section class="panel">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <h3 style="margin:0">Quick Capture</h3>
-            <div class="small muted install-hint" id="installHint">Add to Home Screen</div>
-          </div>
-
-          <div style="margin-top:10px">
-            <div class="filters" id="tagFilters">
-              <div class="chip active" data-tag="All">All</div>
-              <div class="chip" data-tag="Physics">Physics</div>
-              <div class="chip" data-tag="Chemistry">Chemistry</div>
-              <div class="chip" data-tag="Math">Math</div>
-              <div class="chip" data-tag="Other">Other</div>
-            </div>
-
-            <div style="display:flex;gap:8px;margin-top:10px">
-              <button class="btn primary" id="openCaptureBtn2">Add note</button>
-              <button class="btn ghost" id="clearNotes">Clear</button>
-            </div>
-
-            <div class="notes-list" id="notes" style="margin-top:10px"></div>
-          </div>
-        </section>
-
-        <section class="panel" style="margin-top:12px">
-          <h3 style="margin:0">Error Log</h3>
-          <div class="small muted" style="margin-top:8px">Filter and export errors for review.</div>
-          <div style="margin-top:8px">
-            <label class="small muted">Filter by tag</label>
-            <select id="filterSelect" style="margin-top:6px">
-              <option value="All">All</option>
-              <option value="Physics">Physics</option>
-              <option value="Chemistry">Chemistry</option>
-              <option value="Math">Math</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div style="margin-top:10px">
-            <div class="small muted">Saved errors: <span id="errorCount">0</span></div>
-            <div style="margin-top:8px;display:flex;gap:8px">
-              <button class="btn ghost" id="exportErrorsCsv">Export Errors CSV</button>
-              <button class="btn ghost" id="clearErrors">Clear Errors</button>
-            </div>
-          </div>
-        </section>
-      </aside>
-    </div>
-
-    <footer>
-      <div class="small muted">Built for coaching days • Local notes saved on your device • Sync queue when online</div>
-    </footer>
+    <footer style="margin-top:18px" class="small">Local notes saved on your device • PWA ready</footer>
   </div>
 
   <div id="modalRoot"></div>
 
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
   <script>
-    // ---------- Data & keys
-    const NOTES_KEY = 'siddhu_notes_v3';
-    const STREAK_KEY = 'siddhu_streak_v2';
-    const SYNC_QUEUE = 'siddhu_sync_queue_v2';
-
-    // ---------- Timetable
+    // --- Timetable
     const timetable = [
       ['05:00 AM','05:15 AM','Wake up & quick freshen'],
       ['05:15 AM','05:45 AM','Morning exercise'],
-      ['05:45 AM','06:00 AM','Prep & quick breakfast'],
       ['06:00 AM','07:30 AM','Deep practice (Session 1)'],
-      ['07:30 AM','08:00 AM','Revision of yesterday’s class'],
-      ['08:00 AM','08:30 AM','Buffer / travel / prep for coaching'],
       ['09:00 AM','02:30 PM','Coaching block'],
-      ['02:30 PM','03:00 PM','Lunch + short rest'],
-      ['03:00 PM','04:00 PM','Recovery / light review'],
       ['04:00 PM','06:00 PM','Deep practice (Session 2)'],
-      ['06:00 PM','06:30 PM','Error log update'],
-      ['06:30 PM','07:00 PM','Dinner'],
-      ['07:00 PM','08:30 PM','Evening deep practice / problem set'],
-      ['08:30 PM','09:00 PM','Reflection & Teach‑Back'],
-      ['09:00 PM','10:00 PM','Light wind‑down / reading'],
-      ['10:00 PM','','Sleep']
+      ['07:00 PM','08:30 PM','Evening deep practice']
     ];
+    document.getElementById('timetableCards').innerHTML = timetable.map(t=>`<div class="card"><strong>${t[0]} – ${t[1]}</strong><div class="small" style="margin-top:6px">${t[2]}</div></div>`).join('');
 
-    // ---------- Render timetable
-    const cards = document.getElementById('timetableCards');
-    cards.innerHTML = timetable.map((t, i) => {
-      const end = t[1] ? ` – ${t[1]}` : '';
-      return `<div class="card" data-idx="${i}" onclick="slotClick(${i})"><strong>${t[0]}${end}</strong><div class="small muted" style="margin-top:6px">${t[2]}</div></div>`;
-    }).join('');
+    // --- Storage keys
+    const NOTES_KEY = 'siddhu_notes_simple_v1';
 
-    function slotClick(i){
-      const tag = prompt('Tag this slot (Physics/Chemistry/Math/Other) — leave blank for Other') || 'Other';
-      openAddModal(tag);
-    }
-
-    // ---------- Storage helpers
     function loadNotes(){ return JSON.parse(localStorage.getItem(NOTES_KEY)||'[]'); }
-    function saveNotes(list){ localStorage.setItem(NOTES_KEY, JSON.stringify(list)); updateCounts(); queueForSync(list[0]); }
-    function saveStreak(n){ localStorage.setItem(STREAK_KEY, String(n)); }
-    function loadStreak(){ return parseInt(localStorage.getItem(STREAK_KEY)||'0',10); }
+    function saveNotes(list){ localStorage.setItem(NOTES_KEY, JSON.stringify(list)); renderNotes(); }
 
-    // ---------- Render notes
-    function renderNotes(filterTag='All'){
+    // --- Render notes
+    function renderNotes(){
       const list = loadNotes();
-      const notesEl = document.getElementById('notes');
-      const filtered = filterTag === 'All' ? list : list.filter(n=>n.tag===filterTag);
-      if(!filtered.length){ notesEl.innerHTML = '<div class="small muted" style="margin-top:8px">No notes yet.</div>'; return; }
-      notesEl.innerHTML = filtered.map((n,idx)=>`
-        <div class="note">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div class="small muted">${new Date(n.time).toLocaleString()}</div>
-            <div style="display:flex;gap:8px;align-items:center">
-              <div class="chip" style="padding:4px 8px">${n.tag}</div>
-              <button class="btn ghost" data-idx="${idx}" onclick="deleteNote(${idx})">Delete</button>
-            </div>
-          </div>
-          <div style="margin-top:8px">${escapeHtml(n.text)}</div>
-        </div>`).join('');
+      const notes = document.getElementById('notes');
+      if(!list.length){ notes.innerHTML = '<div class="small">No notes yet.</div>'; return; }
+      notes.innerHTML = list.map((n,idx)=>`<div class="note"><div style="display:flex;justify-content:space-between"><div class="small">${new Date(n.time).toLocaleString()}</div><button onclick="deleteNote(${idx})" class="btn">Delete</button></div><div style="margin-top:8px">${escapeHtml(n.text)}</div></div>`).join('');
     }
-
     function escapeHtml(s){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 
-    // ---------- Modal add
-    function openAddModal(prefTag){
+    // --- Modal add
+    function openAddModal(){
       const root = document.getElementById('modalRoot');
       const container = document.createElement('div');
-      container.className = 'modal-back';
-      container.innerHTML = `
-        <div class="modal" role="dialog" aria-modal="true">
-          <h3 style="margin:0">Add quick note</h3>
-          <label class="small muted">Tag</label>
-          <select id="noteTag">
-            <option>Physics</option><option>Chemistry</option><option>Math</option><option>Other</option>
-          </select>
-          <label class="small muted">Note</label>
-          <textarea id="noteText" placeholder="Type your doubt, error, or quick note"></textarea>
-          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
-            <button id="cancelBtn" class="btn">Cancel</button>
-            <button id="saveBtn" class="btn primary">Save</button>
-          </div>
-        </div>`;
+      container.style.position='fixed';container.style.inset=0;container.style.background='rgba(0,0,0,0.4)';container.style.display='flex';container.style.alignItems='center';container.style.justifyContent='center';container.style.zIndex=9999;
+      container.innerHTML = `<div style="background:#fff;padding:14px;border-radius:10px;max-width:520px;width:92%"><h3 style="margin:0">Add note</h3><textarea id="noteText" style="width:100%;height:100px;margin-top:8px;padding:8px;border-radius:6px;border:1px solid #e6eefc"></textarea><div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px"><button id="cancel" class="btn">Cancel</button><button id="save" class="btn primary">Save</button></div></div>`;
       root.appendChild(container);
-      if(prefTag) container.querySelector('#noteTag').value = prefTag;
-      container.querySelector('#cancelBtn').onclick = ()=>container.remove();
-      container.querySelector('#saveBtn').onclick = ()=>{
+      container.querySelector('#cancel').onclick = ()=>container.remove();
+      container.querySelector('#save').onclick = ()=>{
         const text = container.querySelector('#noteText').value.trim();
-        const tag = container.querySelector('#noteTag').value;
-        if(!text) return alert('Please type a note');
+        if(!text) return alert('Type a note');
         const list = loadNotes();
-        list.unshift({text, tag, time: new Date().toISOString()});
+        list.unshift({text, time: new Date().toISOString()});
         saveNotes(list);
         container.remove();
-        renderNotes(document.getElementById('filterSelect').value || 'All');
-        updateCharts();
       };
     }
+    document.getElementById('openCaptureBtn').onclick = openAddModal;
+    document.getElementById('openCaptureBtn2').onclick = openAddModal;
 
-    // ---------- Delete note
-    function deleteNote(idx){
-      const list = loadNotes();
-      list.splice(idx,1);
-      saveNotes(list);
-      renderNotes(document.getElementById('filterSelect').value || 'All');
-      updateCharts();
-    }
+    function deleteNote(i){ const list = loadNotes(); list.splice(i,1); saveNotes(list); }
 
-    // ---------- Filters UI
-    document.getElementById('filterSelect').onchange = (e)=>renderNotes(e.target.value);
-    document.querySelectorAll('#tagFilters .chip').forEach(ch=>{
-      ch.onclick = ()=>{
-        document.querySelectorAll('#tagFilters .chip').forEach(c=>c.classList.remove('active'));
-        ch.classList.add('active');
-        const tag = ch.dataset.tag;
-        document.getElementById('filterSelect').value = tag;
-        renderNotes(tag);
-      };
-    });
-
-    // ---------- Buttons
-    document.getElementById('openCaptureBtn').onclick = ()=>openAddModal();
-    document.getElementById('openCaptureBtn2').onclick = ()=>openAddModal();
-    document.getElementById('openMockBtn').onclick = runMock;
-
-    // ---------- Clear notes
-    document.getElementById('clearNotes').onclick = ()=>{
-      if(confirm('Clear all notes? This cannot be undone.')){ localStorage.removeItem(NOTES_KEY); renderNotes(); updateCounts(); updateCharts(); }
-    };
-
-    // ---------- Error controls
-    document.getElementById('clearErrors').onclick = ()=>{
-      if(confirm('Clear all errors? This removes all saved notes.')){ localStorage.removeItem(NOTES_KEY); renderNotes(); updateCounts(); updateCharts(); }
-    };
-    document.getElementById('exportErrorsCsv').onclick = ()=>exportCsv(loadNotes(), 'siddhu_errors.csv');
-
-    // ---------- Export helpers
-    function exportCsv(list, filename='export.csv'){
-      if(!list || !list.length) return alert('No items to export');
-      const rows = [['time','tag','text']];
-      list.forEach(i=>rows.push([i.time, i.tag, i.text.replaceAll('\n',' ') ]));
-      const csv = rows.map(r=>r.map(c=>`"${String(c).replaceAll('"','""')}"`).join(',')).join('\n');
-      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = filename; a.click(); URL.revokeObjectURL(url);
-    }
-    document.getElementById('exportCsv').onclick = ()=>exportCsv(loadNotes(), 'siddhu_notes.csv');
-    document.getElementById('downloadJson').onclick = ()=>{
-      const data = JSON.stringify(loadNotes(), null, 2);
-      const blob = new Blob([data], {type:'application/json'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = 'siddhu_notes.json'; a.click(); URL.revokeObjectURL(url);
-    };
-
-    // ---------- Streak & mini stats
-    function updateCounts(){
-      const list = loadNotes();
-      document.getElementById('errorCount').textContent = list.length;
-      document.getElementById('streakCount').textContent = loadStreak();
-      const byTag = list.reduce((acc,n)=>{ acc[n.tag]=(acc[n.tag]||0)+1; return acc; },{});
-      const mini = document.getElementById('miniStats');
-      mini.innerHTML = Object.keys(byTag).length ? Object.entries(byTag).map(t=>`<div class="small">${t[0]}: ${t[1]}</div>`).join('') : '<div class="small muted">No notes yet</div>';
-    }
-
-    // ---------- Network status & sync queue
-    function isOnline(){ return navigator.onLine; }
-    function updateNetworkUI(){
-      const netText = document.getElementById('netText');
-      const dot = document.getElementById('networkStatus');
-      if(isOnline()){ netText.textContent = 'Online'; dot.style.color = '#10b981'; trySyncQueue(); } else { netText.textContent = 'Offline'; dot.style.color = '#ef4444'; }
-    }
-    window.addEventListener('online', updateNetworkUI);
-    window.addEventListener('offline', updateNetworkUI);
-
-    function queueForSync(item){
-      if(!item) return;
-      const q = JSON.parse(localStorage.getItem(SYNC_QUEUE)||'[]');
-      q.push(item);
-      localStorage.setItem(SYNC_QUEUE, JSON.stringify(q));
-    }
-    function trySyncQueue(){
-      if(!isOnline()) return;
-      const q = JSON.parse(localStorage.getItem(SYNC_QUEUE)||'[]');
-      if(!q.length) return;
-      // Demo: simulate server sync and clear queue
-      setTimeout(()=>{ localStorage.removeItem(SYNC_QUEUE); console.log('Synced', q.length, 'items'); }, 800);
-    }
-
-    // Wrap saveNotes to queue last item
-    const _saveNotes = saveNotes;
-    saveNotes = function(list){
-      localStorage.setItem(NOTES_KEY, JSON.stringify(list));
-      updateCounts();
-      if(list.length) queueForSync(list[0]);
-      updateNetworkUI();
-    };
-
-    // ---------- PWA install prompt
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      document.getElementById('installHint').style.display = 'inline-block';
-      document.getElementById('installHint').onclick = async ()=>{
-        deferredPrompt.prompt();
-        const choice = await deferredPrompt.userChoice;
-        deferredPrompt = null;
-        document.getElementById('installHint').style.display = 'none';
-      };
-    });
-
-    // ---------- Mock runner
-    function runMock(){
-      if(!confirm('Run a 30‑minute mock now? (This demo records a mock attempt)')) return;
-      const list = loadNotes();
-      list.unshift({text:'Mock attempt recorded', tag:'Other', time:new Date().toISOString(), mock:true});
-      saveNotes(list);
-      alert('Mock recorded. Check Error Log for details.');
-      renderNotes();
-      updateCharts();
-    }
-
-    // ---------- Charts (Chart.js)
-    let tagChart;
-    function updateCharts(){
-      const list = loadNotes();
-      const counts = list.reduce((acc,n)=>{ acc[n.tag]=(acc[n.tag]||0)+1; return acc; },{});
-      const labels = ['Physics','Chemistry','Math','Other'];
-      const data = labels.map(l=>counts[l]||0);
-      if(!tagChart){
-        const ctx = document.getElementById('tagChart').getContext('2d');
-        tagChart = new Chart(ctx, {
-          type: 'doughnut',
-          data: { labels, datasets: [{ data, backgroundColor: ['#2563eb','#ef4444','#f59e0b','#10b981'] }] },
-          options: { plugins:{legend:{position:'bottom'}}, maintainAspectRatio:false }
-        });
-      } else {
-        tagChart.data.datasets[0].data = data;
-        tagChart.update();
-      }
-    }
-
-    // ---------- Theme toggle
-    const themeBtn = document.getElementById('toggleTheme');
-    function applyTheme(){
-      const t = localStorage.getItem('siddhu_theme') || 'light';
-      if(t==='dark') document.body.classList.add('dark'); else document.body.classList.remove('dark');
-    }
-    themeBtn.onclick = ()=>{
-      const cur = localStorage.getItem('siddhu_theme') || 'light';
-      localStorage.setItem('siddhu_theme', cur==='light' ? 'dark' : 'light');
-      applyTheme();
-    };
-    applyTheme();
-
-    // ---------- Init
-    renderNotes();
-    updateCounts();
+    // --- Network status (simple)
+    function updateNetworkUI(){ document.getElementById('netText').textContent = navigator.onLine ? 'Online' : 'Offline'; }
+    window.addEventListener('online', updateNetworkUI); window.addEventListener('offline', updateNetworkUI);
     updateNetworkUI();
-    updateCharts();
 
-    // ---------- Service worker registration
+    // --- Init
+    renderNotes();
+
+    // --- Service worker registration (if you have sw.js)
     if('serviceWorker' in navigator){
-      navigator.serviceWorker.register('/sw.js').catch(()=>{});
+      navigator.serviceWorker.register('/sw.js').catch(()=>{ /* ignore */ });
     }
-
-    // ---------- Utility: export CSV for errors only
-    function exportErrorsCsv(){
-      const list = loadNotes().filter(n=>n.tag && n.text);
-      exportCsv(list, 'siddhu_errors.csv');
-    }
-    // wire exportErrorsCsv to button
-    document.getElementById('exportErrorsCsv').onclick = exportErrorsCsv;
-
-    // ---------- small UX: keyboard shortcut N to open add modal
-    window.addEventListener('keydown', e=>{ if(e.key.toLowerCase()==='n' && !e.metaKey && !e.ctrlKey) openAddModal(); });
   </script>
 </body>
 </html>
