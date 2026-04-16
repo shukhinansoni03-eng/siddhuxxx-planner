@@ -1,0 +1,7 @@
+body{font-family:system-ui,Arial;margin:0;padding:16px;background:#f6f8fb;color:#0b1220}
+header{background:linear-gradient(90deg,#ffffffcc,#e9f0ffcc);padding:12px;border-radius:8px;margin-bottom:12px}
+h1{margin:0;font-size:20px}
+pre{background:#fff;padding:12px;border-radius:6px;overflow:auto}
+button{background:#2563eb;color:#fff;border:none;padding:10px 14px;border-radius:6px;cursor:pointer}
+.note{background:#fff;margin:8px 0;padding:8px;border-radius:6px}
+small{color:#6b7280}
