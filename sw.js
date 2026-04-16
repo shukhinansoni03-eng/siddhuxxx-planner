@@ -1,4 +1,4 @@
-const CACHE_NAME = 'siddhu-cache-noicons-v1';
+const CACHE_NAME = 'siddhu-cache-noicons-v2';
 const FILES_TO_CACHE = [
   '/',
   '/index.html',
