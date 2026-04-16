@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Siddhu Planner</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+</head>
+<body>
+  <header>
+    <h1>Siddhu Planner</h1>
+    <p>Final timetable & quick capture</p>
+  </header>
+
+  <main>
+    <section id="timetable">
+      <h2>Daily Timetable</h2>
+      <pre>
+05:00 AM – 05:15 AM  Wake up & quick freshen
+05:15 AM – 05:45 AM  Morning exercise
+05:45 AM – 06:00 AM  Prep & quick breakfast
+06:00 AM – 07:30 AM  Deep practice (Session 1)
+07:30 AM – 08:00 AM  Revision of yesterday’s class
+08:00 AM – 08:30 AM  Buffer / travel / prep for coaching
+09:00 AM – 02:30 PM  Coaching block
+02:30 PM – 03:00 PM  Lunch + short rest
+03:00 PM – 04:00 PM  Recovery / light review
+04:00 PM – 06:00 PM  Deep practice (Session 2)
+06:00 PM – 06:30 PM  Error log update
+06:30 PM – 07:00 PM  Dinner
+07:00 PM – 08:30 PM  Evening deep practice / problem set
+08:30 PM – 09:00 PM  Reflection & Teach‑Back
+09:00 PM – 10:00 PM  Light wind‑down / reading
+10:00 PM            Sleep
+      </pre>
+    </section>
+
+    <section id="quick-capture">
+      <h2>Quick Capture</h2>
+      <button id="captureBtn">Add quick note</button>
+      <div id="notes"></div>
+    </section>
+  </main>
+
+  <script>
+    // Minimal quick-capture + offline save to localStorage
+    const btn = document.getElementById('captureBtn');
+    const notes = document.getElementById('notes');
+    btn.onclick = () => {
+      const text = prompt('Quick note / doubt (type and press OK):');
+      if (!text) return;
+      const list = JSON.parse(localStorage.getItem('siddhu_notes')||'[]');
+      list.unshift({text, time: new Date().toISOString()});
+      localStorage.setItem('siddhu_notes', JSON.stringify(list));
+      render();
+    };
+    function render(){
+      const list = JSON.parse(localStorage.getItem('siddhu_notes')||'[]');
+      notes.innerHTML = list.map(n => `<div class="note"><small>${new Date(n.time).toLocaleString()}</small><p>${n.text}</p></div>`).join('');
+    }
+    render();
+
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(()=>{});
+    }
+  </script>
+</body>
+</html>
