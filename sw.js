@@ -23,7 +23,6 @@ self.addEventListener('activate', evt => {
 
 self.addEventListener('fetch', evt => {
   if (evt.request.method !== 'GET') return;
-  const url = new URL(evt.request.url);
 
   if (evt.request.mode === 'navigate') {
     evt.respondWith(
